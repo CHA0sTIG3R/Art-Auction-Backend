@@ -17,14 +17,14 @@ def place_bid(artwork_id):
 
     artwork = get_artwork_by_id(artwork_id)
 
-    if not artwork.available:
-        return jsonify({'message': 'Auction is closed!'}), 400
-
-    data = request.get_json()
+    data = request.form.to_dict()
     bid_amount = data.get('bid_amount')
 
     if not artwork:
         return jsonify({'message': 'Artwork not found!'}), 404
+    
+    if not artwork.available:
+        return jsonify({'message': 'Auction is closed!'}), 400
 
     user = get_user_by_username(session.get('username'))
 
